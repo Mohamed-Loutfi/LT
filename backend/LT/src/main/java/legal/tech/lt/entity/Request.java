@@ -3,29 +3,24 @@ package legal.tech.lt.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "documents")
+@Table(name = "requests")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Document {
+public class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
-
-    @Lob
-    private String content;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String title;
+    private String description;
+    private String status; // PENDING, IN_PROGRESS, DONE
 
     // Relation avec User
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User owner;
+    private User user;
 }

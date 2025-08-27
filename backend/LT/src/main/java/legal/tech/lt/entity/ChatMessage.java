@@ -6,26 +6,23 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "documents")
+@Table(name = "chat_messages")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Document {
+public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
-
-    @Lob
-    private String content;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String sender; // USER ou AI
+    private String message;
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     // Relation avec User
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User owner;
+    private User user;
 }

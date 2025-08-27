@@ -3,29 +3,22 @@ package legal.tech.lt.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "documents")
+@Table(name = "legal_resources")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Document {
+public class LegalResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    private String title;
 
     @Lob
     private String content;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    // Relation avec User
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User owner;
+    private String type; // ARTICLE, VIDEO, DICTIONARY_TERM
 }
