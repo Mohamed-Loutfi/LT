@@ -7,12 +7,11 @@ export default function Dashboard() {
   useEffect(() => {
     api.get("/users")
       .then((res) => {
-        console.log("✅ /users:", res.data);
+        console.log("✅ Réponse users:", res.data);
         setUsers(Array.isArray(res.data) ? res.data : []);
       })
       .catch((err) => {
-        console.error("❌ /users:", err?.response?.status, err?.response?.data);
-        alert("Accès refusé: vérifie le token");
+        console.error("❌ Erreur Dashboard:", err?.response?.status, err?.response?.data);
       });
   }, []);
 
@@ -20,7 +19,9 @@ export default function Dashboard() {
     <div>
       <h2>Dashboard</h2>
       <ul>
-        {users.map(u => <li key={u.id}>{u.name} ({u.email})</li>)}
+        {users.map((u) => (
+          <li key={u.id}>{u.name} ({u.email})</li>
+        ))}
       </ul>
     </div>
   );

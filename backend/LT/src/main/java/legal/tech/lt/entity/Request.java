@@ -1,5 +1,7 @@
 package legal.tech.lt.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +24,6 @@ public class Request {
     // Relation avec User
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("requests")
     private User user;
 }

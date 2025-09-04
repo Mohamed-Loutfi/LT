@@ -10,19 +10,31 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const t = await login({ email, password });
-      console.log("✅ Token sauvegardé:", t);
+      const token = await login({ email, password });
+      console.log("✅ Token sauvegardé:", token);
       navigate("/dashboard");
     } catch (err) {
-      console.error(err);
-      alert("Login échoué");
+      console.error("❌ Erreur Login:", err?.response?.status, err?.response?.data);
+      alert("Échec de connexion. Vérifie email/mot de passe.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email" />
-      <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Mot de passe"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
       <button type="submit">Login</button>
     </form>
   );

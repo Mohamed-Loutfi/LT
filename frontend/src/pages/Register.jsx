@@ -11,25 +11,37 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register({ name, email, password });
-      navigate("/login");
-    } catch (error) {
-      alert("Register failed!");
+      const res = await register({ name, email, password });
+      console.log("✅ Register success:", res);
+      alert("Utilisateur créé avec succès !");
+      navigate("/login"); // redirige vers la page de login
+    } catch (e) {
+      console.error("❌ Register échoué:", e?.response?.status, e?.response?.data);
+      alert("Erreur lors de l'inscription");
     }
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Name" value={name}
-          onChange={(e) => setName(e.target.value)} />
-        <input type="email" placeholder="Email" value={email}
-          onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password}
-          onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Register</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Nom"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Mot de passe"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button type="submit">S'inscrire</button>
+    </form>
   );
 }
