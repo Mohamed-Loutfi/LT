@@ -12,6 +12,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/client" element={<ClientSpace />} />
         <Route path="/mediatheque" element={<MediaLibrary />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
