@@ -1,19 +1,23 @@
 package legal.tech.lt.service;
+
 import legal.tech.lt.dto.LoginRequest;
 import legal.tech.lt.dto.RegisterRequest;
 import legal.tech.lt.entity.User;
 import legal.tech.lt.repository.UserRepository;
+import legal.tech.lt.config.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 @Service
 public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public String register(RegisterRequest request) {
         User user = User.builder()
@@ -32,7 +36,7 @@ public class AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
-        // 🔥 Plus tard : retourner un JWT au lieu d’un simple message
-        return "Login successful";
+
+        return jwtUtil.generateToken(user.getEmail()); // retourne le JWT
     }
 }
