@@ -1,20 +1,13 @@
 import api from "./api";
 
-// Register user
-export const register = async (data) => {
-  const response = await api.post("/auth/register", data);
-  return response.data;
+export const login = async (credentials) => {
+  const { data } = await api.post("/auth/login", credentials);
+  if (!data?.token) throw new Error("Token manquant");
+  localStorage.setItem("token", data.token);
+  return data.token;
 };
 
-// Login user
-export const login = async (data) => {
-  const response = await api.post("/auth/login", data);
-  const token = response.data.token; // backend retourne { "token": "..." }
-  localStorage.setItem("token", token); // stocker dans le navigateur
-  return token;
-};
-
-// Logout user
-export const logout = () => {
-  localStorage.removeItem("token");
+export const register = async (payload) => {
+  const { data } = await api.post("/auth/register", payload);
+  return data; // { message: ... }
 };

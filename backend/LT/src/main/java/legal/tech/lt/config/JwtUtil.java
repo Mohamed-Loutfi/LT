@@ -1,6 +1,8 @@
 package legal.tech.lt.config;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
@@ -10,34 +12,39 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "MySuperSecretKeyForJwtThatShouldBeLong123456789"; // min 32 chars
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1h
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1h
 
-    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
-
+    // Générer un token
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key)
                 .compact();
     }
 
+    // Extraire l'email (subject)
     public String extractEmail(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key).build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        return getClaims(token).getSubject();
     }
 
+    // Vérifier si le token est valide
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (JwtException e) {
+            Claims claims = getClaims(token);
+            return !claims.getExpiration().before(new Date());
+        } catch (Exception e) {
             return false;
         }
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
