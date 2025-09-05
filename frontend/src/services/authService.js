@@ -1,17 +1,14 @@
 import api from "./api";
 
 export const login = async (credentials) => {
-  console.log("📤 Payload envoyé:", credentials);
-
+  localStorage.removeItem("token"); // efface l'ancien token
   const { data } = await api.post("/auth/login", credentials, {
-    headers: { "Content-Type": "application/json" }, // force JSON
+    headers: { "Content-Type": "application/json" },
   });
-
-  if (!data?.token) throw new Error("Token manquant");
-
   localStorage.setItem("token", data.token);
   return data.token;
 };
+
 
 export const register = async (payload) => {
   const { data } = await api.post("/auth/register", payload, {
@@ -22,4 +19,5 @@ export const register = async (payload) => {
 
 export const logout = () => {
   localStorage.removeItem("token");
+  window.location.href = "/login";
 };

@@ -1,5 +1,6 @@
 package legal.tech.lt.controller;
 
+import legal.tech.lt.dto.UserDTO;
 import legal.tech.lt.entity.User;
 import legal.tech.lt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,27 +16,38 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> new UserDTO(
+                        user.getId(),
+                        user.getName(),
+                        user.getEmail(),
+                        user.getRole()
+                ))
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userRepository.findById(id).orElseThrow();
+    public UserDTO getUserById(@PathVariable Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole());
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public UserDTO createUser(@RequestBody User user) {
+        User saved = userRepository.save(user);
+        return new UserDTO(saved.getId(), saved.getName(), saved.getEmail(), saved.getRole());
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody User userDetails) {
         User user = userRepository.findById(id).orElseThrow();
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
         user.setPassword(userDetails.getPassword());
-        return userRepository.save(user);
+        user.setRole(userDetails.getRole());
+        User updated = userRepository.save(user);
+        return new UserDTO(updated.getId(), updated.getName(), updated.getEmail(), updated.getRole());
     }
 
     @DeleteMapping("/{id}")
