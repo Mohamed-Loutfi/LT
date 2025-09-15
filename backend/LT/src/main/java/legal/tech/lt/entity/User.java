@@ -38,5 +38,6 @@ public class User {
     private List<Document> documents;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ChatMessage> chatMessages;
 }

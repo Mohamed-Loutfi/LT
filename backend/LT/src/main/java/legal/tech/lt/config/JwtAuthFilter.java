@@ -37,23 +37,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
 
+        // 🔹 Vérifie si un token est présent
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             try {
                 email = jwtUtil.extractEmail(token);
             } catch (ExpiredJwtException e) {
-                // ✅ Token expiré → on renvoie 401
+                // ✅ Token expiré → on bloque uniquement si le token est fourni
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Token expired, please login again");
                 return;
             } catch (JwtException e) {
-                // ✅ Token invalide → on renvoie 401
+                // ✅ Token invalide → on bloque uniquement si le token est fourni
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write("Invalid token");
                 return;
             }
+        } else {
+            // ✅ Pas de token → laisser passer (utile pour les endpoints publics comme FAQ)
+            filterChain.doFilter(request, response);
+            return;
         }
 
+        // 🔹 Si un email est extrait, on authentifie l’utilisateur
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
@@ -69,4 +75,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

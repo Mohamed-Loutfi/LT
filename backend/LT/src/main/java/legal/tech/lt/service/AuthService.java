@@ -19,14 +19,14 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public String register(RegisterRequest request) {
+    public User register(RegisterRequest request) {
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         userRepository.save(user);
-        return "User registered successfully";
+        return userRepository.save(user);
     }
 
     public String login(LoginRequest request) {
