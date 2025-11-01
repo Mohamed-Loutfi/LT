@@ -8,32 +8,34 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Appel à l’API
-      const res = await register({ name, email, password });
+  e.preventDefault();
+  setLoading(true);
+  
+  try {
+    // ✅ Le service retourne déjà les données directement
+    const { token, user } = await register({ name, email, password });
 
-      // ✅ Récupérer le token et l’utilisateur
-      const { token, user } = res.data;
-
-      // ✅ Sauvegarder le token dans localStorage
-      localStorage.setItem("token", token);
-
-      console.log("✅ Register success:", user);
-
-      alert(`Bienvenue ${user.name} ! Votre compte a été créé.`);
-      
-      // ✅ Redirection automatique vers le dashboard
-      navigate("/dashboard");
-
-    } catch (e) {
-      console.error("❌ Register échoué:", e?.response?.status, e?.response?.data);
-      alert("Erreur lors de l'inscription");
+    if (!token) {
+      throw new Error("Token manquant dans la réponse API");
     }
-  };
+
+    localStorage.setItem("token", token);
+    console.log("✅ Register success:", user);
+
+    alert(`Bienvenue ${user.name} ! Votre compte a été créé.`);
+    navigate("/home");
+
+  } catch (e) {
+    console.error("❌ Register échoué:", e);
+    alert(e?.response?.data?.message || "Erreur lors de l'inscription");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-cover bg-center"
@@ -52,6 +54,7 @@ export default function Register() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            disabled={loading}
           />
           <input
             type="email"
@@ -60,6 +63,7 @@ export default function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
           <input
             type="password"
@@ -68,12 +72,14 @@ export default function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition disabled:opacity-50"
+            disabled={loading}
           >
-            S'inscrire
+            {loading ? "Inscription en cours..." : "S'inscrire"}
           </button>
           <p className="text-center text-sm text-gray-600 mt-4">
           Déjà un compte ?{" "}

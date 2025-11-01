@@ -1,5 +1,6 @@
 package legal.tech.lt.controller;
 
+import legal.tech.lt.dto.DocumentRequestDTO;
 import legal.tech.lt.entity.DocumentRequest;
 import legal.tech.lt.entity.User;
 import legal.tech.lt.repository.DocumentRequestRepository;
@@ -45,7 +46,18 @@ public class DocumentRequestController {
 
     // ✅ Récupérer toutes les demandes (admin)
     @GetMapping
-    public List<DocumentRequest> getAllRequests() {
-        return requestRepo.findAll();
+    public List<DocumentRequestDTO> getAllRequests() {
+        return requestRepo.findAll().stream()
+                .map(req -> new DocumentRequestDTO(
+                        req.getId(),
+                        req.getTitle(),
+                        req.getDescription(),
+                        req.getDocType(),
+                        req.getCreatedAt(),
+                        req.getRequester() != null ? req.getRequester().getName() : null,
+                        req.getRequester() != null ? req.getRequester().getEmail() : null
+                ))
+                .toList();
     }
+
 }

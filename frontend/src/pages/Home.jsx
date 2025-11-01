@@ -8,45 +8,31 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login");
+      navigate("/home");
     }
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Header */}
-      <header className="flex justify-between items-center p-6 bg-white shadow">
-        <h1 className="text-2xl font-bold text-blue-600">LegalTech</h1>
-        <nav className="space-x-6">
-          <a href="/" className="hover:text-blue-600">Accueil</a>
-          <a href="/podcasts" className="hover:text-blue-600">Podcasts</a>
-          <a href="/cours" className="hover:text-blue-600">Cours</a>
-          <a href="/quiz" className="hover:text-blue-600">Quiz</a>
-          <a href="/faq" className="hover:text-blue-600">FAQ</a>
-          <a href="/docgen" className="hover:text-blue-600">Docu-Gen</a>
-        </nav>
-        <button
-          onClick={logout}
-          className=" text-white rounded transition"
-        >
-          Logout
-        </button>
-      </header>
+    <div className="min-h-screen bg-gray-50 text-gray-900 ">
+      
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center py-24 text-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
-        <h2 className="text-4xl font-bold mb-4">Bienvenue sur LegalTech</h2>
-        <p className="max-w-xl mb-6">
-          Une plateforme pour apprendre le droit, écouter des podcasts, suivre
-          des cours interactifs, et générer vos documents légaux.
-        </p>
-        <button
-          onClick={() => navigate("/cours")}
-          className="px-6 py-3 bg-white text-blue-600 rounded-lg shadow hover:bg-gray-100"
-        >
-          Commencer
-        </button>
-      </section>
+      <section
+  className="relative flex flex-col items-center justify-center py-24 text-center text-white"
+  style={{
+    backgroundImage:
+      "url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1740&q=80')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}
+>
+  <div className="absolute inset-0 bg-black/50"></div> {/* overlay */}
+  <div className="relative z-10">
+    <h1 className="text-4xl font-bold">Bienvenue sur LegalTech</h1>
+    <p className="mt-4 text-lg">Vos services juridiques simplifiés</p>
+  </div>
+</section>
+
 
       {/* Features */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8 px-12 py-16">

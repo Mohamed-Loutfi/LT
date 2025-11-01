@@ -1,5 +1,6 @@
 package legal.tech.lt.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -30,7 +31,7 @@ public class User {
 
     // Relations
 
-    @JsonIgnoreProperties("user")
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Request> requests;
 

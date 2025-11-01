@@ -29,28 +29,11 @@ export default function FAQ() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
+    <div className=" max-w-7xl mx-auto flex flex-col h-[80vh] border-2 rounded-lg bg-gray-50">
       
-      <header className="flex justify-between items-center p-6 bg-white shadow">
-        <h1 className="text-2xl font-bold text-blue-600">LegalTech</h1>
-        <nav className="space-x-6">
-          <a href="/" className="hover:text-blue-600">Accueil</a>
-          <a href="/podcasts" className="hover:text-blue-600">Podcasts</a>
-          <a href="/cours" className="hover:text-blue-600">Cours</a>
-          <a href="/faq" className="hover:text-blue-600">FAQ-AI</a>
-          <a href="/docgen" className="hover:text-blue-600">Docu-Gen</a>
-        </nav>
-        <button
-          onClick={logout}
-          className="ml-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-        >
-          Logout
-        </button>
-      </header>
 
       {/* Zone de chat */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+      <div className="flex-[0.9] overflow-y-auto p-6 space-y-4">
         {history.map((msg, i) => (
           <div
             key={i}
@@ -72,7 +55,7 @@ export default function FAQ() {
       </div>
 
       {/* Zone de saisie */}
-      <form onSubmit={handleSubmit} className="p-4 bg-white border-t flex">
+      <form onSubmit={handleSubmit} className="p-4 pb-4 bg-white border-t flex">
         <input
           type="text"
           className="flex-2 border rounded-2xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
@@ -82,12 +65,12 @@ export default function FAQ() {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 rounded-r hover:bg-blue-700 transition"
+          className="bg-black text-black px-6 rounded-r hover:bg-blue-700 border-2 transition"
         >
           Envoyer
         </button>
       </form>
-      <a className="text-gray-900">Cette IA peut faire des erreurs</a>
+      <a className="text-gray-900 text-center">Cette IA peut faire des erreurs</a>
     </div>
   );
 }

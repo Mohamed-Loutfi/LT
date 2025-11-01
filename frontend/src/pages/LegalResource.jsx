@@ -21,18 +21,7 @@ export default function LegalResource() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Header */}
-      <header className="flex justify-between items-center p-6 bg-white shadow">
-        <h1 className="text-2xl font-bold text-blue-600">LegalTech - Ressources</h1>
-        <nav className="space-x-6">
-          <a href="/" className="hover:text-blue-600">Accueil</a>
-          <a href="/podcasts" className="hover:text-blue-600">Podcasts</a>
-          <a href="/cours" className="hover:text-blue-600">Cours</a>
-          <a href="/quiz" className="hover:text-blue-600">Quiz</a>
-          <a href="/faq" className="hover:text-blue-600">FAQ</a>
-          <a href="/docgen" className="hover:text-blue-600">Docu-Gen</a>
-        </nav>
-      </header>
+      
     
 
       <main className="px-12 py-16">

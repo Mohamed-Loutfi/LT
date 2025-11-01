@@ -14,7 +14,7 @@ export default function Login() {
     try {
       const token = await login({ email, password });
       console.log("✅ Token sauvegardé:", token);
-      navigate("/dashboard");
+      navigate("/home");
     } catch (err) {
       console.error("❌ Erreur Login:", err?.response?.status, err?.response?.data);
       alert("Échec de connexion. Vérifie email/mot de passe.");
@@ -47,7 +47,7 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition">Login</button>
+      <button type="submit" className="w-full bg-blue-600  p-3 rounded hover:bg-blue-700 transition text-black">Login</button>
       <p className="text-center text-sm text-gray-600 mt-4">
           Pas encore inscrit ?{" "}
           <a href="/register" className="text-blue-600 hover:underline">
